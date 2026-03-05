@@ -6,13 +6,15 @@
 #include "turtle-lexer.h"
 #include "turtle-parser.h"
 
-int main() {
+int main()
+{
   srand(time(NULL));
 
   struct ast root;
   int ret = yyparse(&root);
 
-  if (ret != 0) {
+  if (ret != 0)
+  {
     return ret;
   }
 
@@ -24,7 +26,7 @@ int main() {
   context_create(&ctx);
 
   ast_eval(&root, &ctx);
-//   ast_print(&root);
+  //   ast_print(&root);
 
   ast_destroy(&root);
 

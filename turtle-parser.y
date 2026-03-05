@@ -31,6 +31,9 @@ void yyerror(struct ast *ret, const char *);
 %token            FORWARD     "forward"
 %token            BACKWARD    "backward"
 %token            POSITION    "position"
+%token            RIGHT       "right"
+%token            LEFT        "left"
+%token            HEADING     "heading"
 
 %type <node> unit cmds cmd expr
 
@@ -47,7 +50,7 @@ cmds:
 
 cmd:
     FORWARD expr   { /* TODO */ }
-  | UP             {  }
+  | UP             { struct ast ret; ast_destroy(&ret); }
 ;
 
 expr:

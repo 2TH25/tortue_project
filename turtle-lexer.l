@@ -21,7 +21,7 @@ DIGIT [0-9]
 "backward"|"bw"         { return BACKWARD; }
 "position"|"pos"        { return POSITION; }
 "right"|"rt"            { return RIGHT; }
-"left"|"lt"             { return RIGHT; }
+"left"|"lt"             { return LEFT; }
 "heading"|"hd"          { return HEADING; } 
 
 [\n\t ]*                /* whitespace */

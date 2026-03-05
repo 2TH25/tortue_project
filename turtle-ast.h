@@ -5,7 +5,8 @@
 #include <stdbool.h>
 
 // simple commands
-enum ast_cmd {
+enum ast_cmd
+{
   CMD_UP,
   CMD_DOWN,
   CMD_RIGHT,
@@ -20,7 +21,8 @@ enum ast_cmd {
 };
 
 // internal functions
-enum ast_func {
+enum ast_func
+{
   FUNC_COS,
   FUNC_RANDOM,
   FUNC_SIN,
@@ -29,7 +31,8 @@ enum ast_func {
 };
 
 // kind of a node in the abstract syntax tree
-enum ast_kind {
+enum ast_kind
+{
   KIND_CMD_SIMPLE,
   KIND_CMD_REPEAT,
   KIND_CMD_BLOCK,
@@ -48,10 +51,12 @@ enum ast_kind {
 #define AST_CHILDREN_MAX 3
 
 // a node in the abstract syntax tree
-struct ast_node {
+struct ast_node
+{
   enum ast_kind kind; // kind of the node
 
-  union {
+  union
+  {
     enum ast_cmd cmd;   // kind == KIND_CMD_SIMPLE
     double value;       // kind == KIND_EXPR_VALUE, for literals
     char op;            // kind == KIND_EXPR_BINOP or kind == KIND_EXPR_UNOP, for operators in expressions
@@ -59,19 +64,18 @@ struct ast_node {
     enum ast_func func; // kind == KIND_EXPR_FUNC, a function
   } u;
 
-  size_t children_count;  // the number of children of the node
-  struct ast_node *children[AST_CHILDREN_MAX];  // the children of the node (arguments of commands, etc)
-  struct ast_node *next;  // the next node in the sequence
+  size_t children_count;                       // the number of children of the node
+  struct ast_node *children[AST_CHILDREN_MAX]; // the children of the node (arguments of commands, etc)
+  struct ast_node *next;                       // the next node in the sequence
 };
-
 
 // TODO: make some constructors to use in parser.y
 // for example:
 struct ast_node *make_expr_value(double value);
 
-
 // root of the abstract syntax tree
-struct ast {
+struct ast
+{
   struct ast_node *unit;
 };
 
@@ -79,7 +83,8 @@ struct ast {
 void ast_destroy(struct ast *self);
 
 // the execution context
-struct context {
+struct context
+{
   double x;
   double y;
   double angle;
