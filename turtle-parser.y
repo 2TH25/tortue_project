@@ -34,6 +34,9 @@ void yyerror(struct ast *ret, const char *);
 %token            RIGHT       "right"
 %token            LEFT        "left"
 %token            HEADING     "heading"
+%token            COLOR       "color"
+%token            HOME        "home"
+%token            REPEAT      "repeat"
 
 %type <node> unit cmds cmd expr
 

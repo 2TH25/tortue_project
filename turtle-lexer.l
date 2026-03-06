@@ -22,7 +22,10 @@ DIGIT [0-9]
 "position"|"pos"        { return POSITION; }
 "right"|"rt"            { return RIGHT; }
 "left"|"lt"             { return LEFT; }
-"heading"|"hd"          { return HEADING; } 
+"heading"|"hd"          { return HEADING; }
+"color"                 { return COLOR; }
+"home"                  { return HOME; }
+"repeat"                { return REPEAT; }
 
 [\n\t ]*                /* whitespace */
 .                       { fprintf(stderr, "Unknown token: '%s'\n", yytext); exit(EXIT_FAILURE); }
