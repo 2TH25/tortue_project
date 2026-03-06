@@ -17,8 +17,31 @@ struct ast_node *make_expr_value(double value)
   return node;
 }
 
+struct ast_node *make_expr_name(char* value)
+{
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_EXPR_NAME;
+  node->u.name = value;
+  return node;
+}
+
+void ast_node_destroy(struct ast_node *self)
+{
+  if (self == NULL) return;
+
+  if (self->kind == KIND_EXPR_NAME)
+    free(self->u.name);
+
+  for (int i = 0; i < self->children_count; i++)
+    ast_node_destroy(self->children[i]);
+
+  ast_node_destroy(self->next);
+  free(self);
+}
+
 void ast_destroy(struct ast *self)
 {
+  ast_node_destroy(self->unit);
 }
 
 /*
@@ -135,13 +158,25 @@ struct ast_node *make_cmd_heading(struct ast_node *expr)
   return node;
 }
 
-struct ast_node *make_cmd_color(struct ast_node *expr)
+struct ast_node *make_cmd_color_name(struct ast_node *name)
 {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
   node->u.cmd = CMD_COLOR;
   node->children_count = 1;
-  node->children[0] = expr;
+  node->children[0] = name;
+  return node;
+}
+
+struct ast_node *make_cmd_color(struct ast_node *r, struct ast_node *g, struct ast_node *b)
+{
+  struct ast_node *node = calloc(1, sizeof(struct ast_node));
+  node->kind = KIND_CMD_SIMPLE;
+  node->u.cmd = CMD_COLOR;
+  node->children_count = 3;
+  node->children[0] = r;
+  node->children[0] = g;
+  node->children[0] = b;
   return node;
 }
 

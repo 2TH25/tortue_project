@@ -61,13 +61,14 @@ cmd:
   | RIGHT expr        { $$ = make_cmd_right($2); }
   | LEFT expr         { $$ = make_cmd_left($2); }
   | HEADING expr      { $$ = make_cmd_heading($2); }
-  | COLOR expr        { $$ = make_cmd_color($2); }
+  | COLOR NAME        { $$ = make_cmd_color_name($2); }
+  | COLOR expr ',' expr ',' expr { $$ = make_cmd_color($2, $3, $4); }
   | HOME expr         { $$ = make_cmd_home($2); }
 ;
 
 expr:
     VALUE             { $$ = make_expr_value($1); }
-    /* TODO: add identifier */
+    NAME              { $$ = make_expr_name($1); }
 ;
 
 %%
