@@ -58,11 +58,11 @@ cmd:
   | FORWARD expr      { $$ = make_cmd_forward($2); }
   | BACKWARD expr     {  }
   | POSITION expr     {  }
-  | RIGHT expr        {  }
-  | LEFT expr         {  }
-  | HEADING expr      {  }
-  | COLOR expr        {  }
-  | HOME expr         {  }
+  | RIGHT expr        { $$ = make_cmd_right($2); }
+  | LEFT expr         { $$ = make_cmd_left($2); }
+  | HEADING expr      { $$ = make_cmd_heading($2); }
+  | COLOR expr        { $$ = make_cmd_color($2); }
+  | HOME expr         { $$ = make_cmd_home($2); }
 ;
 
 expr:
