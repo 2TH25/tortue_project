@@ -52,8 +52,17 @@ cmds:
 ;
 
 cmd:
-    FORWARD expr   { /* TODO */ }
-  | UP             { struct ast ret; ast_destroy(&ret); }
+    PRINT expr        {  }
+  | UP expr           {  }
+  | DOWN              {  }
+  | FORWARD expr      { $$ = make_cmd_forward($2); }
+  | BACKWARD expr     {  }
+  | POSITION expr     {  }
+  | RIGHT expr        {  }
+  | LEFT expr         {  }
+  | HEADING expr      {  }
+  | COLOR expr        {  }
+  | HOME expr         {  }
 ;
 
 expr:
