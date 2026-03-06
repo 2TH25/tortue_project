@@ -52,12 +52,12 @@ cmds:
 ;
 
 cmd:
-    PRINT expr        {  }
-  | UP expr           {  }
-  | DOWN              {  }
+    PRINT expr        { $$ = make_cmd_print($2); }
+  | UP expr           { $$ = make_cmd_up($2); }
+  | DOWN              { $$ = make_cmd_down($2); }
   | FORWARD expr      { $$ = make_cmd_forward($2); }
-  | BACKWARD expr     {  }
-  | POSITION expr     {  }
+  | BACKWARD expr     { $$ = make_cmd_backward($2); }
+  | POSITION expr     { $$ = make_cmd_position($2); }
   | RIGHT expr        { $$ = make_cmd_right($2); }
   | LEFT expr         { $$ = make_cmd_left($2); }
   | HEADING expr      { $$ = make_cmd_heading($2); }
