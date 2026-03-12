@@ -14,6 +14,15 @@ DIGIT [0-9]
 %%
 
 {DIGIT}+                { yylval.value = strtod(yytext, NULL); return VALUE; }
+
+"+"                     { return '+'; }
+"-"                     { return '-'; }
+"*"                     { return '*'; }
+"/"                     { return '/'; }
+"("                     { return '{'; }
+")"                     { return '}'; }
+"^"                     { return '^'; }
+
 "print"                 { return PRINT; }
 "up"                    { return UP; }
 "down"                  { return DOWN; }

@@ -24,7 +24,6 @@ void yyerror(struct ast *ret, const char *);
 %token <value>    VALUE       "value"
 %token <name>     NAME        "name"
 
-/* TODO: add other tokens */
 %token            PRINT       "print"
 %token            UP          "up"
 %token            DOWN        "down"
@@ -37,6 +36,10 @@ void yyerror(struct ast *ret, const char *);
 %token            COLOR       "color"
 %token            HOME        "home"
 %token            REPEAT      "repeat"
+
+%left '+' '-'
+%left '*' '/'
+%right UMINUS
 
 %type <node> unit cmds cmd expr
 
@@ -54,7 +57,7 @@ cmds:
 cmd:
     PRINT expr        { $$ = make_cmd_print($2); }
   | UP expr           { $$ = make_cmd_up($2); }
-  | DOWN              { $$ = make_cmd_down($2); }
+  | DOWN expr         { $$ = make_cmd_down($2); }
   | FORWARD expr      { $$ = make_cmd_forward($2); }
   | BACKWARD expr     { $$ = make_cmd_backward($2); }
   | POSITION expr     { $$ = make_cmd_position($2); }
@@ -67,8 +70,14 @@ cmd:
 ;
 
 expr:
-    VALUE             { $$ = make_expr_value($1); }
-    NAME              { $$ = make_expr_name($1); }
+    VALUE                     { $$ = make_expr_value($1); }
+  | NAME                      { $$ = make_expr_name($1); }
+  | expr '+' expr             { $$ = make_expr_value($1 + $3); }
+  | expr '-' expr             { $$ = make_expr_value($1 - $3); }
+  | expr '*' expr             { $$ = make_expr_value($1 * $3); }
+  | expr '/' expr             { $$ = make_expr_value($1 / $3); }
+  | '-' expr %prec UMINUS     { $$ = make_expr_value(- $2) ; }
+  | expr '^' expr             { $$ = make_expr_value($1 / $3); }
 ;
 
 %%
