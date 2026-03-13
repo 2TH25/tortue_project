@@ -9,13 +9,21 @@
 
 %option warn 8bit nodefault noyywrap
 
-
 /* TODO: Trouver expression qui permettrait de faire les décimaux et notations scientifiques */
 DIGIT [0-9]
 
 %%
 
 {DIGIT}+                { yylval.value = strtod(yytext, NULL); return VALUE; }
+
+"+"                     { return '+'; }
+"-"                     { return '-'; }
+"*"                     { return '*'; }
+"/"                     { return '/'; }
+"("                     { return '{'; }
+")"                     { return '}'; }
+"^"                     { return '^'; }
+
 ","                     { return ','; }
 "print"                 { return PRINT; }
 "up"                    { return UP; }

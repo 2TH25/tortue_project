@@ -24,7 +24,6 @@ void yyerror(struct ast *ret, const char *);
 %token <value>    VALUE       "value"
 %token <name>     NAME        "name"
 
-/* TODO: add other tokens */
 %token            PRINT       "print"
 %token            UP          "up"
 %token            DOWN        "down"
@@ -37,6 +36,10 @@ void yyerror(struct ast *ret, const char *);
 %token            COLOR       "color"
 %token            HOME        "home"
 %token            REPEAT      "repeat"
+
+%left '+' '-'
+%left '*' '/'
+%right UMINUS
 
 %type <node> unit cmds cmd expr
 
@@ -66,9 +69,16 @@ cmd:
   | HOME              { $$ = make_cmd_home(); }
 ;
 
+/* TODO: Régler bug, tu fais des opérations avec des ast_node donc ça plante
 expr:
-    VALUE             { $$ = make_expr_value($1); }
-  | NAME              { $$ = make_expr_name($1); }
+    VALUE                     { $$ = make_expr_value($1); }
+  | NAME                      { $$ = make_expr_name($1); }
+  | expr '+' expr             { $$ = make_expr_value($1 + $3); }
+  | expr '-' expr             { $$ = make_expr_value($1 - $3); }
+  | expr '*' expr             { $$ = make_expr_value($1 * $3); }
+  | expr '/' expr             { $$ = make_expr_value($1 / $3); }
+  | '-' expr %prec UMINUS     { $$ = make_expr_value(- $2) ; }
+  | expr '^' expr             { $$ = make_expr_value($1 / $3); }
 ;
 
 %%
