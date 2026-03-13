@@ -64,8 +64,53 @@ void ast_eval(const struct ast *self, struct context *ctx)
  * print
  */
 
+const char* CMD_NAMES[] = {
+  [CMD_UP]       = "up",
+  [CMD_DOWN]     = "down",
+  [CMD_RIGHT]    = "right",
+  [CMD_LEFT]     = "left",
+  [CMD_HEADING]  = "heading",
+  [CMD_FORWARD]  = "forward",
+  [CMD_BACKWARD] = "backward",
+  [CMD_POSITION] = "position",
+  [CMD_HOME]     = "home",
+  [CMD_COLOR]    = "color",
+  [CMD_PRINT]    = "print"
+};
+
+void ast_node_print(const struct ast_node *self)
+{
+  if (self == NULL) return;
+
+  switch (self->kind) {
+    case KIND_EXPR_VALUE:
+      printf("%g", self->u.value);
+      break;
+    case KIND_EXPR_NAME:
+      printf("%s", self->u.name);
+      break;
+    case KIND_CMD_SIMPLE:
+      printf("%s", CMD_NAMES[self->u.cmd]);
+
+      if (self->children_count > 0) {
+        printf(" ");
+        for (size_t i = 0; i < self->children_count; i++) {
+          if (i > 0) printf(", ");
+          ast_node_print(self->children[i]);
+        }
+      }
+      printf("\n");
+      break;
+    default: ;
+  }
+
+  if (self->next != NULL) ast_node_print(self->next);
+}
+
 void ast_print(const struct ast *self)
 {
+  if (self == NULL || self->unit == NULL) return;
+  ast_node_print(self->unit);
 }
 
 struct ast_node *make_cmd_print(struct ast_node *expr)
@@ -78,23 +123,21 @@ struct ast_node *make_cmd_print(struct ast_node *expr)
   return node;
 }
 
-struct ast_node *make_cmd_up(struct ast_node *expr)
+struct ast_node *make_cmd_up()
 {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
   node->u.cmd = CMD_UP;
-  node->children_count = 1;
-  node->children[0] = expr;
+  node->children_count = 0;
   return node;
 }
 
-struct ast_node *make_cmd_down(struct ast_node *expr)
+struct ast_node *make_cmd_down()
 {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
   node->u.cmd = CMD_DOWN;
-  node->children_count = 1;
-  node->children[0] = expr;
+  node->children_count = 0;
   return node;
 }
 
@@ -103,8 +146,7 @@ struct ast_node *make_cmd_forward(struct ast_node *expr)
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
   node->u.cmd = CMD_FORWARD;
-  node->children_count = 1;
-  node->children[0] = expr;
+  node->children_count = 0;
   return node;
 }
 
@@ -118,13 +160,14 @@ struct ast_node *make_cmd_backward(struct ast_node *expr)
   return node;
 }
 
-struct ast_node *make_cmd_position(struct ast_node *expr)
+struct ast_node *make_cmd_position(struct ast_node *x, struct ast_node *y)
 {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
   node->u.cmd = CMD_POSITION;
-  node->children_count = 1;
-  node->children[0] = expr;
+  node->children_count = 2;
+  node->children[0] = x;
+  node->children[1] = y;
   return node;
 }
 
@@ -175,17 +218,16 @@ struct ast_node *make_cmd_color(struct ast_node *r, struct ast_node *g, struct a
   node->u.cmd = CMD_COLOR;
   node->children_count = 3;
   node->children[0] = r;
-  node->children[0] = g;
-  node->children[0] = b;
+  node->children[1] = g;
+  node->children[2] = b;
   return node;
 }
 
-struct ast_node *make_cmd_home(struct ast_node *expr)
+struct ast_node *make_cmd_home()
 {
   struct ast_node *node = calloc(1, sizeof(struct ast_node));
   node->kind = KIND_CMD_SIMPLE;
   node->u.cmd = CMD_HOME;
-  node->children_count = 1;
-  node->children[0] = expr;
+  node->children_count = 0;
   return node;
 }

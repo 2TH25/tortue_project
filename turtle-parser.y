@@ -53,22 +53,22 @@ cmds:
 
 cmd:
     PRINT expr        { $$ = make_cmd_print($2); }
-  | UP expr           { $$ = make_cmd_up($2); }
-  | DOWN              { $$ = make_cmd_down($2); }
+  | UP                { $$ = make_cmd_up(); }
+  | DOWN              { $$ = make_cmd_down(); }
   | FORWARD expr      { $$ = make_cmd_forward($2); }
   | BACKWARD expr     { $$ = make_cmd_backward($2); }
-  | POSITION expr     { $$ = make_cmd_position($2); }
+  | POSITION expr ',' expr  { $$ = make_cmd_position($2, $4); }
   | RIGHT expr        { $$ = make_cmd_right($2); }
   | LEFT expr         { $$ = make_cmd_left($2); }
   | HEADING expr      { $$ = make_cmd_heading($2); }
-  | COLOR NAME        { $$ = make_cmd_color_name($2); }
-  | COLOR expr ',' expr ',' expr { $$ = make_cmd_color($2, $3, $4); }
-  | HOME expr         { $$ = make_cmd_home($2); }
+  | COLOR NAME        { $$ = make_cmd_color_name(make_expr_name($2)); }
+  | COLOR expr ',' expr ',' expr { $$ = make_cmd_color($2, $4, $6); }
+  | HOME              { $$ = make_cmd_home(); }
 ;
 
 expr:
     VALUE             { $$ = make_expr_value($1); }
-    NAME              { $$ = make_expr_name($1); }
+  | NAME              { $$ = make_expr_name($1); }
 ;
 
 %%

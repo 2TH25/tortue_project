@@ -9,11 +9,14 @@
 
 %option warn 8bit nodefault noyywrap
 
+
+/* TODO: Trouver expression qui permettrait de faire les décimaux et notations scientifiques */
 DIGIT [0-9]
 
 %%
 
 {DIGIT}+                { yylval.value = strtod(yytext, NULL); return VALUE; }
+","                     { return ','; }
 "print"                 { return PRINT; }
 "up"                    { return UP; }
 "down"                  { return DOWN; }
@@ -26,6 +29,8 @@ DIGIT [0-9]
 "color"                 { return COLOR; }
 "home"                  { return HOME; }
 "repeat"                { return REPEAT; }
+
+[A-Za-z][A-Za-z0-9]*    { yylval.name = strdup(yytext); return NAME; }
 
 [\n\t ]*                /* whitespace */
 .                       { fprintf(stderr, "Unknown token: '%s'\n", yytext); exit(EXIT_FAILURE); }

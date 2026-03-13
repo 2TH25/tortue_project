@@ -74,17 +74,17 @@ struct ast_node
 struct ast_node *make_expr_value(double value);
 struct ast_node *make_expr_name(char* value);
 struct ast_node *make_cmd_print(struct ast_node *expr);
-struct ast_node *make_cmd_up(struct ast_node *expr);
-struct ast_node *make_cmd_down(struct ast_node *expr);
+struct ast_node *make_cmd_up();
+struct ast_node *make_cmd_down();
 struct ast_node *make_cmd_forward(struct ast_node *expr);
 struct ast_node *make_cmd_backward(struct ast_node *expr);
-struct ast_node *make_cmd_position(struct ast_node *expr);
+struct ast_node *make_cmd_position(struct ast_node *x, struct ast_node *y);
 struct ast_node *make_cmd_right(struct ast_node *expr);
 struct ast_node *make_cmd_left(struct ast_node *expr);
 struct ast_node *make_cmd_heading(struct ast_node *expr);
 struct ast_node *make_cmd_color_name(struct ast_node *name);
 struct ast_node *make_cmd_color(struct ast_node *r, struct ast_node *g, struct ast_node *b);
-struct ast_node *make_cmd_home(struct ast_node *expr);
+struct ast_node *make_cmd_home();
 
 // root of the abstract syntax tree
 struct ast
