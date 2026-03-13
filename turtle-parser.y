@@ -69,7 +69,7 @@ cmd:
   | HOME              { $$ = make_cmd_home(); }
 ;
 
-/* TODO: Régler bug, tu fais des opérations avec des ast_node donc ça plante
+/* TODO: Régler bug, tu fais des opérations avec des ast_node donc ça plante */
 expr:
     VALUE                     { $$ = make_expr_value($1); }
   | NAME                      { $$ = make_expr_name($1); }
